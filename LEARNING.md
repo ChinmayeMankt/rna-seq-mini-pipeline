@@ -4,9 +4,9 @@ I (Chinmaye Mankatalia) am using this repository to **practice**, not to claim R
 
 ## What this repo is meant to show
 
-- Comfort with pandas on a gene\u00d7sample count table from a **documented public accession**
+- Comfort with pandas on a gene×sample count table from a **documented public accession**
 - Library-size / CPM thinking and a simple log transform
-- That \u201cdifferential expression\u201d in production is a statistical model (negative binomial, empirical Bayes), not just a t-test
+- That “differential expression” in production is a statistical model (negative binomial, empirical Bayes), not just a t-test
 - How to cite GEO/SRA/recount when swapping toy data for a real table
 
 ## What this repo is not
@@ -18,10 +18,10 @@ I (Chinmaye Mankatalia) am using this repository to **practice**, not to claim R
 
 ## Public data used
 
-- **GSE52778** / **SRP033351** (airway smooth muscle, dex vs untreated), counts from **recount2**, trimmed to 600 genes \u00d7 6 samples for a git-friendly demo. See `data/DATA_SOURCE.md`.
+- **GSE52778** / **SRP033351** (airway smooth muscle, dex vs untreated), counts from **recount2**, trimmed to 600 genes × 6 samples for a git-friendly demo. See `data/DATA_SOURCE.md`.
 
 ## Next steps I want to take
 
 1. Repeat the same table in R with DESeq2 on the full airway object
 2. Read a short nf-core/rnaseq overview so I know where this notebook sits in a real workflow
-3. Learn why batch, outliers, and gene-length matter before claiming I \u201cdo RNA-seq\u201d
+3. Learn why batch, outliers, and gene-length matter before claiming I “do RNA-seq”

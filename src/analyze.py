@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Toy RNA-seq count-table QC + DE-style comparison.
+"""RNA-seq count-table QC + DE-style comparison on a real public subset.
 
-Learning script only. Not a substitute for DESeq2/edgeR.
+Default data: airway smooth-muscle RNA-seq (GSE52778 / SRP033351), gene counts
+from recount2, dexamethasone vs untreated (6 samples × 600 genes subset).
+
+Learning script only. Not a substitute for DESeq2/edgeR. Not FASTQ→counts.
 """
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -16,6 +20,12 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 OUT = ROOT / "results"
 OUT.mkdir(exist_ok=True)
+
+# Documented public source (see data/DATA_SOURCE.md)
+DEFAULT_COUNTS = DATA / "airway_dex_counts.csv"
+DEFAULT_META = DATA / "airway_sample_metadata.csv"
+TOY_COUNTS = DATA / "toy_counts.csv"
+TOY_META = DATA / "sample_metadata.csv"
 
 
 def bh_fdr(pvalues: np.ndarray) -> np.ndarray:
@@ -39,8 +49,24 @@ def log_cpm(counts: pd.DataFrame, prior: float = 0.5) -> pd.DataFrame:
 
 
 def main() -> None:
-    counts = pd.read_csv(DATA / "toy_counts.csv", index_col=0)
-    meta = pd.read_csv(DATA / "sample_metadata.csv").set_index("sample")
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument(
+        "--dataset",
+        choices=("airway", "toy"),
+        default="airway",
+        help="airway = real GSE52778/SRP033351 recount2 subset; toy = synthetic CSV",
+    )
+    args = p.parse_args()
+
+    if args.dataset == "airway":
+        counts_path, meta_path = DEFAULT_COUNTS, DEFAULT_META
+        title = "PCA of log-CPM (airway GSE52778 subset)"
+    else:
+        counts_path, meta_path = TOY_COUNTS, TOY_META
+        title = "PCA of log-CPM (toy data)"
+
+    counts = pd.read_csv(counts_path, index_col=0)
+    meta = pd.read_csv(meta_path).set_index("sample")
     counts = counts.loc[:, meta.index]
 
     qc = pd.DataFrame(
@@ -51,9 +77,11 @@ def main() -> None:
         }
     )
     qc.to_csv(OUT / "qc_metrics.csv")
+    print(f"Dataset: {args.dataset}  counts={counts_path.name}")
     print("QC (per sample)")
     print(qc.to_string())
     print(f"\nAll-zero genes: {(counts.sum(axis=1) == 0).sum()}")
+    print(f"Matrix shape: {counts.shape[0]} genes × {counts.shape[1]} samples")
 
     lcpm = log_cpm(counts)
 
@@ -63,11 +91,11 @@ def main() -> None:
     pcs = X @ vt[:2].T
     fig, ax = plt.subplots(figsize=(5, 4))
     for cond, color in [("control", "#4C78A8"), ("treated", "#F58518")]:
-        mask = meta["condition"] == cond
+        mask = (meta["condition"] == cond).to_numpy()
         ax.scatter(pcs[mask, 0], pcs[mask, 1], label=cond, c=color, s=60)
     ax.set_xlabel("PC1")
     ax.set_ylabel("PC2")
-    ax.set_title("PCA of log-CPM (toy data)")
+    ax.set_title(title)
     ax.legend()
     fig.tight_layout()
     fig.savefig(OUT / "pca_samples.png", dpi=120)
@@ -84,7 +112,7 @@ def main() -> None:
     res["fdr"] = bh_fdr(res["pvalue"].to_numpy())
     res = res.sort_values("fdr")
     res.to_csv(OUT / "de_results.csv")
-    print("\nTop genes by FDR (toy DE-style t-test on log-CPM):")
+    print("\nTop genes by FDR (Welch t-test on log-CPM — learning demo, not DESeq2):")
     print(res.head(8).to_string())
     print(f"\nWrote {OUT}")
 
