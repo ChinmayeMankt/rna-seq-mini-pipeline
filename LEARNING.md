@@ -18,7 +18,7 @@ I (Chinmaye Mankatalia) am using this repository to **practice**, not to claim R
 
 ## Public data used
 
-- **GSE52778** / **SRP033351** (airway smooth muscle, dex vs untreated), counts from **recount2**, trimmed to 600 genes × 6 samples for a git-friendly demo. See `data/DATA_SOURCE.md`.
+- **GSE52778** / **SRP033351** (airway smooth muscle, dex vs untreated), counts from **recount2**, trimmed to 150 genes × 6 samples for a git-friendly demo. See `data/DATA_SOURCE.md`.
 
 ## Next steps I want to take
 

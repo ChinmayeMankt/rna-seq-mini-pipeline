@@ -8,7 +8,7 @@
 | SRA study | **SRP033351** |
 | Paper / design | Himes et al. — human airway smooth muscle, dexamethasone vs untreated |
 | Count table origin | **recount2** gene counts (`counts_gene.tsv.gz` for SRP033351) |
-| What is in git | `airway_dex_counts.csv` — **600** Ensembl genes × **6** runs (3 untreated, 3 dex), top expressed genes from the recount matrix |
+| What is in git | `airway_dex_counts.csv` — **150** Ensembl genes × **6** runs (3 untreated, 3 dex), top expressed genes from the recount matrix |
 | Metadata | `airway_sample_metadata.csv` (SRR ↔ condition / cell line / GSM) |
 
 Samples used: `SRR1039508`, `SRR1039516`, `SRR1039520` (untreated / control) and `SRR1039509`, `SRR1039513`, `SRR1039517` (dexamethasone / treated). Labels follow the Bioconductor `airway` package convention (dex vs untreated; albuterol arms omitted). Classic airway vignette sample `SRR1039512` is not present in this recount2 matrix, so the subset is balanced 3 vs 3 without it.

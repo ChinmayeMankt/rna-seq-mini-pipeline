@@ -8,7 +8,7 @@ It is **not** a production NGS pipeline. It does **not** start from FASTQ, does 
 
 ## What it does
 
-1. Loads `data/airway_dex_counts.csv` (600 genes × 6 samples: 3 untreated, 3 dexamethasone) plus metadata.
+1. Loads `data/airway_dex_counts.csv` (150 genes × 6 samples: 3 untreated, 3 dexamethasone) plus metadata.
 2. Reports per-sample library sizes, detects genes with all-zero counts, and plots a PCA of log-CPM values.
 3. Computes log2 fold-change (treated vs control) and a Welch t-test on log-CPM, with Benjamini–Hochberg FDR.
 
