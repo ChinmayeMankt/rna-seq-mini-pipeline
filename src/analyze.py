@@ -2,7 +2,7 @@
 """RNA-seq count-table QC + DE-style comparison on a real public subset.
 
 Default data: airway smooth-muscle RNA-seq (GSE52778 / SRP033351), gene counts
-from recount2, dexamethasone vs untreated (6 samples × 600 genes subset).
+from recount2, dexamethasone vs untreated (6 samples × 150 genes subset).
 
 Learning script only. Not a substitute for DESeq2/edgeR. Not FASTQ→counts.
 """
